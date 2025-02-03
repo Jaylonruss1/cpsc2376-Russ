@@ -1,4 +1,113 @@
-asdf
-asdf
-asdf
-asdf
+#include <iostream>
+#include <vector>
+#include <limits>
+
+using namespace std;
+
+// Function to print the vector
+void printVector(const vector<int>& vec) {
+    if (vec.empty()) {
+        cout << "The vector is empty!" << endl;
+        return;
+    }
+
+    cout << "Vector contents: ";
+    for (size_t i = 0; i < vec.size(); ++i) {
+        cout << vec.at(i) << " ";
+    }
+    cout << endl;
+}
+
+// Function to double the values in the vector
+void doubleVector(vector<int>& vec) {
+    for (size_t i = 0; i < vec.size(); ++i) {
+        vec.at(i) *= 2;
+    }
+    cout << "The vector has been doubled." << endl;
+}
+
+// Function to calculate and return the sum of the vector
+int calculateSum(const vector<int>& vec) {
+    int sum = 0;
+    for (size_t i = 0; i < vec.size(); ++i) {
+        sum += vec.at(i);
+    }
+    return sum;
+}
+
+// Function to print multiples of a user-defined number
+void printMultiples(const vector<int>& vec, int multiple) {
+    cout << "Multiples of " << multiple << ": ";
+    bool found = false;
+    for (size_t i = 0; i < vec.size(); ++i) {
+        if (vec.at(i) % multiple == 0) {
+            cout << vec.at(i) << " ";
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "No multiples found.";
+    }
+    cout << endl;
+}
+
+int main() {
+    vector<int> vec;
+    int choice = 0;
+
+    do {
+        // Displaying the menu
+        cout << "Menu:\n";
+        cout << "1. Add an item to the vector\n";
+        cout << "2. Print the vector\n";
+        cout << "3. Double the vector\n";
+        cout << "4. Find the sum\n";
+        cout << "5. Print multiples of a value\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        // Handling invalid input for choice
+        if (cin.fail()) {
+            cin.clear();  // Clears the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  // Ignores the rest of the line
+            cout << "Invalid input. Please enter a valid number." << endl;
+            continue;
+        }
+
+        switch (choice) {
+            case 1: {
+                int num;
+                cout << "Enter a number to add to the vector: ";
+                cin >> num;
+                vec.push_back(num);
+                break;
+            }
+            case 2:
+                printVector(vec);
+                break;
+            case 3:
+                doubleVector(vec);
+                break;
+            case 4: {
+                int sum = calculateSum(vec);
+                cout << "Sum of the vector: " << sum << endl;
+                break;
+            }
+            case 5: {
+                int multiple;
+                cout << "Enter the number to find multiples of: ";
+                cin >> multiple;
+                printMultiples(vec, multiple);
+                break;
+            }
+            case 6:
+                cout << "Exiting program." << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please choose a valid option." << endl;
+        }
+    } while (choice != 6);
+
+    return 0;
+}
