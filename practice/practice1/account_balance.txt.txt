@@ -1,0 +1,68 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+
+// Function to read balance from the file
+double readBalanceFromFile(const std::string& filename) {
+    std::ifstream file(filename);
+    double balance = 0.0;
+    
+    if (file) {
+        file >> balance;
+    } else {
+        // If file doesn't exist, initialize balance to $100.00
+        balance = 100.00;
+        std::ofstream outfile(filename);
+        outfile << std::fixed << std::setprecision(2) << balance;
+    }
+    
+    return balance;
+}
+
+// Function to write the balance to the file
+void writeBalanceToFile(const std::string& filename, double balance) {
+    std::ofstream file(filename);
+    if (file) {
+        file << std::fixed << std::setprecision(2) << balance;
+    } else {
+        std::cerr << "Error: Could not open file to write balance.\n";
+    }
+}
+
+// Function to check balance
+void checkBalance(double balance) {
+    std::cout << "Your current balance is: $" << std::fixed << std::setprecision(2) << balance << std::endl;
+}
+
+// Function to handle deposit
+void deposit(double& balance, const std::string& filename) {
+    double amount;
+    std::cout << "Enter deposit amount: ";
+    std::cin >> amount;
+    
+    if (amount > 0) {
+        balance += amount;
+        std::cout << "Deposit successful. Your new balance is: $" << std::fixed << std::setprecision(2) << balance << std::endl;
+        writeBalanceToFile(filename, balance);
+    } else {
+        std::cout << "Error: Deposit amount must be positive.\n";
+    }
+}
+
+// Function to handle withdrawal
+void withdraw(double& balance, const std::string& filename) {
+    double amount;
+    std::cout << "Enter withdrawal amount: ";
+    std::cin >> amount;
+    
+    if (amount > 0 && amount <= balance) {
+        balance -= amount;
+        std::cout << "Withdrawal successful. Your new balance is: $" << std::fixed << std::setprecision(2) << balance << std::endl;
+        writeBalanceToFile(filename, balance);
+    } else if (amount > balance) {
+        std::cout << "Error: Insufficient funds. Your balance is $" << std::fixed << std::setprecision(2) << balance << ".\n";
+    } else {
+        std::cout << "Error: Withdrawal amount must be positive.\n";
+    }
+}
