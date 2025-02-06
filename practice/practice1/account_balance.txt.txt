@@ -66,3 +66,39 @@ void withdraw(double& balance, const std::string& filename) {
         std::cout << "Error: Withdrawal amount must be positive.\n";
     }
 }
+int main() {
+    const std::string filename = "account_balance.txt";
+    double balance = readBalanceFromFile(filename);
+    
+    std::cout << "Welcome to Your Bank Account!" << std::endl;
+    
+    while (true) {
+        std::cout << "\nMenu:\n";
+        std::cout << "1. Check Balance\n";
+        std::cout << "2. Deposit Money\n";
+        std::cout << "3. Withdraw Money\n";
+        std::cout << "4. Exit\n";
+        std::cout << "Enter your choice: ";
+        
+        int choice;
+        std::cin >> choice;
+        
+        switch (choice) {
+            case 1:
+                checkBalance(balance);
+                break;
+            case 2:
+                deposit(balance, filename);
+                break;
+            case 3:
+                withdraw(balance, filename);
+                break;
+            case 4:
+                std::cout << "Thank you for using our bank services. Goodbye!" << std::endl;
+                return 0;
+            default:
+                std::cout << "Error: Invalid choice. Please choose a valid option.\n";
+        }
+    }
+}
+
