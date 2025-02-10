@@ -1,0 +1,12 @@
+#include <iostream>
+#include "connect4.h"
+
+int main() {
+    char playAgain;
+    do {
+        play();
+        std::cout << "Would you like to play again? (y/n): ";
+        std::cin >> playAgain;
+    } while(playAgain == 'y' || playAgain == 'Y');
+    return 0;
+}

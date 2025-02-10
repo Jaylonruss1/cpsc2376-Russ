@@ -1,0 +1,16 @@
+#ifndef CONNECT4_H
+#define CONNECT4_H
+
+enum class GameState { ONGOING, PLAYER_1_WINS, PLAYER_2_WINS, DRAW };
+enum class Player { NONE, PLAYER_1, PLAYER_2 };
+
+// Function Declarations
+void makeBoard();
+void play();
+GameState gameStatus();
+void printBoard();
+bool isColumnFull(int col);
+bool dropPiece(int col, Player currentPlayer);
+void printRules();
+
+#endif
