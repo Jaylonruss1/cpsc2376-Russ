@@ -1,0 +1,50 @@
+#include <iostream>
+#include <string>
+
+void greet(std::string name = "Guest", std::string prefix = "Hello") {
+    std::cout << prefix << ", " << name << "!" << std::endl;
+}
+
+int main() {
+    int choice;
+    std::string name, prefix;
+
+    while (true) {
+        // Display Menu
+        std::cout << "\n1. Default Greeting\n";
+        std::cout << "2. Greet by Name\n";
+        std::cout << "3. Custom Greeting\n";
+        std::cout << "Choose an option: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1:
+                greet();  // Default greeting
+                break;
+            case 2:
+                std::cout << "Enter name: ";
+                std::cin >> name;
+                greet(name);  // Greet with name
+                break;
+            case 3:
+                std::cout << "Enter greeting prefix: ";
+                std::cin >> prefix;
+                std::cout << "Enter name: ";
+                std::cin >> name;
+                greet(name, prefix);  // Custom greeting
+                break;
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
+                break;
+        }
+
+        char again;
+        std::cout << "Would you like to choose another option (y/n)? ";
+        std::cin >> again;
+        if (again != 'y' && again != 'Y') {
+            break;
+        }
+    }
+
+    return 0;
+}
