@@ -1,0 +1,60 @@
+#include <iostream>
+#include <deque>
+#include <string>
+using namespace std;
+
+int main() {
+    deque<string> content;
+    string text;
+    int choice;
+    
+    while (true) {
+        // Display menu options
+        cout << "1. Add Text\n";
+        cout << "2. Undo Last Edit\n";
+        cout << "3. Show Content\n";
+        cout << "4. Exit\n";
+        cout << "Choice: ";
+        cin >> choice;
+
+        if (choice == 1) {
+            // Add text
+            cout << "Enter text: ";
+            cin.ignore();  // To clear the newline character from the previous input
+            getline(cin, text);
+            content.push_back(text);
+            cout << "Text added.\n";
+        } 
+        else if (choice == 2) {
+            // Undo last edit
+            if (!content.empty()) {
+                content.pop_back();
+                cout << "Last edit undone.\n";
+            } else {
+                cout << "No content to undo.\n";
+            }
+        } 
+        else if (choice == 3) {
+            // Show content
+            if (!content.empty()) {
+                cout << "Current Content:\n";
+                for (const string& line : content) {
+                    cout << line << " ";
+                }
+                cout << "\n";
+            } else {
+                cout << "No content available.\n";
+            }
+        } 
+        else if (choice == 4) {
+            // Exit
+            cout << "Exiting the editor.\n";
+            break;
+        } 
+        else {
+            cout << "Invalid choice, please try again.\n";
+        }
+    }
+    
+    return 0;
+}
