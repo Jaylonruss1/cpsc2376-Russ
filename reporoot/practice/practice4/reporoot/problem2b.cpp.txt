@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+#include <algorithm> // for std::max
+
+// Template function to find max value
+template <typename T>
+T findMax(T a, T b, T c) {
+    return std::max({a, b, c});
+}
+
+int main() {
+    int choice;
+    int intVal1, intVal2, intVal3;
+    std::string strVal1, strVal2, strVal3;
+
+    std::cout << "Compare (1) Numbers or (2) Strings? ";
+    std::cin >> choice;
+
+    if (choice == 1) {
+        // Compare Numbers
+        std::cout << "Enter first value: ";
+        std::cin >> intVal1;
+        std::cout << "Enter second value: ";
+        std::cin >> intVal2;
+        std::cout << "Enter third value: ";
+        std::cin >> intVal3;
+
+        int maxVal = findMax(intVal1, intVal2, intVal3);  // Call the template function
+        std::cout << "Max value: " << maxVal << std::endl;
+    } else if (choice == 2) {
+        // Compare Strings
+        std::cout << "Enter first value: ";
+        std::cin >> strVal1;
+        std::cout << "Enter second value: ";
+        std::cin >> strVal2;
+        std::cout << "Enter third value: ";
+        std::cin >> strVal3;
+
+        std::string maxVal = findMax(strVal1, strVal2, strVal3);  // Call the template function
+        std::cout << "Max value: " << maxVal << std::endl;
+    } else {
+        std::cout << "Invalid choice. Please enter 1 for numbers or 2 for strings." << std::endl;
+    }
+
+    return 0;
+}
