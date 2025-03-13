@@ -1,6 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
+#include <memory>
 
+// Base class for all employees
 class Employee {
 protected:
     std::string name;
@@ -9,27 +12,27 @@ protected:
 public:
     Employee(std::string name, int id) : name(name), id(id) {}
     virtual ~Employee() {}
-
     virtual double calculateSalary() const = 0; // Pure virtual function
     virtual void displayInfo() const {
         std::cout << "ID: " << id << ", Name: " << name;
     }
 };
+
+// Salaried employee class
 class SalariedEmployee : public Employee {
     double monthlySalary;
 
 public:
     SalariedEmployee(std::string name, int id, double monthlySalary)
         : Employee(name, id), monthlySalary(monthlySalary) {}
-
     double calculateSalary() const override { return monthlySalary; }
-
     void displayInfo() const override {
         Employee::displayInfo();
         std::cout << ", Type: Salaried, Monthly Salary: $" << monthlySalary << "\n";
     }
 };
 
+// Hourly employee class
 class HourlyEmployee : public Employee {
     double hourlyRate;
     int hoursWorked;
@@ -37,9 +40,7 @@ class HourlyEmployee : public Employee {
 public:
     HourlyEmployee(std::string name, int id, double hourlyRate, int hoursWorked)
         : Employee(name, id), hourlyRate(hourlyRate), hoursWorked(hoursWorked) {}
-
     double calculateSalary() const override { return hourlyRate * hoursWorked; }
-
     void displayInfo() const override {
         Employee::displayInfo();
         std::cout << ", Type: Hourly, Hours Worked: " << hoursWorked
@@ -48,15 +49,14 @@ public:
     }
 };
 
+// Commission-based employee class
 class CommissionEmployee : public Employee {
     double baseSalary, salesAmount, commissionRate;
 
 public:
     CommissionEmployee(std::string name, int id, double baseSalary, double salesAmount, double commissionRate)
         : Employee(name, id), baseSalary(baseSalary), salesAmount(salesAmount), commissionRate(commissionRate) {}
-
     double calculateSalary() const override { return baseSalary + (salesAmount * commissionRate); }
-
     void displayInfo() const override {
         Employee::displayInfo();
         std::cout << ", Type: Commission, Base Salary: $" << baseSalary
@@ -65,3 +65,51 @@ public:
                   << ", Salary: $" << calculateSalary() << "\n";
     }
 };
+
+// Function to read employees from a file and create appropriate objects
+void readEmployees(std::vector<Employee*>& employees, const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file) {
+        std::cerr << "Error: Unable to open file " << filename << "\n";
+        return;
+    }
+
+    std::string type, name;
+    int id;
+    while (file >> type >> id >> name) {
+        if (type == "Salaried") {
+            double monthlySalary;
+            file >> monthlySalary;
+            employees.push_back(new SalariedEmployee(name, id, monthlySalary));
+        } else if (type == "Hourly") {
+            double hourlyRate;
+            int hoursWorked;
+            file >> hourlyRate >> hoursWorked;
+            employees.push_back(new HourlyEmployee(name, id, hourlyRate, hoursWorked));
+        } else if (type == "Commission") {
+            double baseSalary, salesAmount, commissionRate;
+            file >> baseSalary >> salesAmount >> commissionRate;
+            employees.push_back(new CommissionEmployee(name, id, baseSalary, salesAmount, commissionRate));
+        } else {
+            std::cerr << "Invalid employee type: " << type << "\n";
+        }
+    }
+    file.close();
+}
+
+int main() {
+    std::vector<Employee*> employees;
+    readEmployees(employees, "employees.txt");
+
+    // Display employee details
+    for (const auto& emp : employees) {
+        emp->displayInfo();
+    }
+
+    // Clean up allocated memory
+    for (auto emp : employees) {
+        delete emp;
+    }
+
+    return 0;
+}
