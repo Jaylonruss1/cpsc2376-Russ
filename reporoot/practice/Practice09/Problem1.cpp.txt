@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+
+int main() {
+    float redPotion{0.0f};    // Amount of red potion in mL
+    float bluePotion{0.0f};   // Amount of blue potion in mL
+    float* flask{nullptr};    // Pointer to the selected potion
+    
+    std::string choice;
+    
+    while (true) {
+        std::cout << "Which potion do you want to add to? (Red/Blue) or type 'Done' to exit: ";
+        std::cin >> choice;
+
+        if (choice == "Done") {
+            break;
+        } else if (choice == "Red") {
+            flask = &redPotion;
+        } else if (choice == "Blue") {
+            flask = &bluePotion;
+        } else {
+            std::cout << "Invalid choice! Please enter 'Red', 'Blue', or 'Done'.\n";
+            continue;
+        }
+
+        float amount;
+        std::cout << "Enter amount to add (mL): ";
+        std::cin >> amount;
+
+        if (amount < 0) {
+            std::cout << "Cannot add a negative amount!\n";
+            continue;
+        }
+
+        *flask += amount;
+
+        std::cout << "Red Potion: " << redPotion << " mL, Blue Potion: " << bluePotion << " mL\n";
+    }
+
+    std::cout << "Final amounts - Red: " << redPotion << " mL, Blue: " << bluePotion << " mL\n";
+    return 0;
+}
